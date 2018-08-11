@@ -2,36 +2,41 @@ package com.fycmd.imageloader.floaderlib;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 
+import com.fycmd.imageloader.floaderlib.base.FLoadBuilder;
 import com.fycmd.imageloader.floaderlib.base.ILoaderFactory;
 import com.fycmd.imageloader.floaderlib.base.ImageLoader;
 import com.fycmd.imageloader.floaderlib.base.LoaderBuilder;
+import com.fycmd.imageloader.floaderlib.glide.GlideLoader;
+
+import java.io.File;
 
 /**
  * Created by fy on 2018/6/9.
- *
  */
-public class LoaderUtils {
+public class FLoader {
     private Application application;
-    private static volatile LoaderUtils mInstance;
+    private static volatile FLoader mInstance;
 
-    public static LoaderUtils getInstance() {
+    public static FLoader getInstance() {
         if (mInstance == null) {
-            synchronized (LoaderUtils.class) {
+            synchronized (FLoader.class) {
                 if (mInstance == null) {
-                    mInstance = new LoaderUtils();
+                    mInstance = new FLoader();
                 }
             }
         }
         return mInstance;
     }
+
     /**
      * @param application app
      */
     public void init(Application application) {
         this.application = application;
-//        ImageLoader.getInstance().setLoaderFactory(new PicassoLoader());
+        ImageLoader.getInstance().setLoaderFactory(new GlideLoader());
     }
 
     /**
@@ -47,6 +52,46 @@ public class LoaderUtils {
 
     public Context getContext() {
         return application;
+    }
+
+    /**
+     * 自定义（链式调用）
+     *
+     * @param path 图片地址
+     * @return builder
+     */
+    public FLoadBuilder load(String path) {
+        return ImageLoader.getInstance().load(path);
+    }
+
+    /**
+     * 自定义（链式调用）
+     *
+     * @param drawableResId 图片资源ID
+     * @return builder
+     */
+    public FLoadBuilder load(int drawableResId) {
+        return ImageLoader.getInstance().load(drawableResId);
+    }
+
+    /**
+     * 自定义（链式调用）
+     *
+     * @param uri URI
+     * @return builder
+     */
+    public FLoadBuilder load(Uri uri) {
+        return ImageLoader.getInstance().load(uri);
+    }
+
+    /**
+     * 自定义（链式调用）
+     *
+     * @param file 文件
+     * @return builder
+     */
+    public FLoadBuilder load(File file) {
+        return ImageLoader.getInstance().load(file);
     }
 
     public void loadImage(View view, String path, int placeholderId, int errorId) {
@@ -82,7 +127,7 @@ public class LoaderUtils {
     }
 
     public void loadImage(View view, String path, int placeholderId, int errorId, boolean skipMemory, boolean skipLocal, int reWidth, int reHeight, float bitmapAngle) {
-        LoaderBuilder builder = ImageLoader.getInstance().load(path).with(view.getContext()).placeholder(placeholderId).error(errorId).centerCrop().skipMemCache(skipMemory).skipLocalCache(skipLocal);
+        FLoadBuilder builder = ImageLoader.getInstance().load(path).with(view.getContext()).placeholder(placeholderId).error(errorId).centerCrop().skipMemCache(skipMemory).skipLocalCache(skipLocal);
         if (reWidth != 0 && reHeight != 0) {
             builder.resize(reWidth, reHeight);
         }
@@ -93,7 +138,7 @@ public class LoaderUtils {
     }
 
     public void loadImage(View view, int drawableResId, int placeholderId, int errorId, boolean skipMemory, boolean skipLocal, int reWidth, int reHeight, float bitmapAngle) {
-        LoaderBuilder builder = ImageLoader.getInstance().load(drawableResId).with(view.getContext()).placeholder(placeholderId).error(errorId).centerCrop().skipMemCache(skipMemory).skipLocalCache(skipLocal);
+        FLoadBuilder builder = ImageLoader.getInstance().load(drawableResId).with(view.getContext()).placeholder(placeholderId).error(errorId).centerCrop().skipMemCache(skipMemory).skipLocalCache(skipLocal);
         if (reWidth != 0 && reHeight != 0) {
             builder.resize(reWidth, reHeight);
         }
@@ -101,16 +146,5 @@ public class LoaderUtils {
             builder.angle(bitmapAngle);
         }
         builder.into(view);
-    }
-
-
-    /**
-     * 自定义（链式调用）
-     *
-     * @param path 图片地址
-     * @return builder
-     */
-    public LoaderBuilder load(String path) {
-        return ImageLoader.getInstance().load(path);
     }
 }

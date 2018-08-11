@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.fycmd.imageloader.floaderlib.LoaderUtils;
+import com.fycmd.imageloader.floaderlib.FLoader;
 import com.fycmd.imageloader.floaderlib.base.FTransformation;
 import com.fycmd.imageloader.floaderlib.base.ILoaderFactory;
 import com.fycmd.imageloader.floaderlib.base.LoaderBuilder;
@@ -100,7 +100,7 @@ public class GlideLoader implements ILoaderFactory {
 
     @Override
     public void clearMemoryCache() {
-        Glide.get(LoaderUtils.getInstance().getContext()).clearMemory();
+        Glide.get(FLoader.getInstance().getContext()).clearMemory();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GlideLoader implements ILoaderFactory {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Glide.get(LoaderUtils.getInstance().getContext()).clearDiskCache();  //不能再UI线程调用
+                Glide.get(FLoader.getInstance().getContext()).clearDiskCache();  //不能再UI线程调用
             }
         });
 

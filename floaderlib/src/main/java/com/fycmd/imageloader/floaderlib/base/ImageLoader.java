@@ -6,7 +6,6 @@ import java.io.File;
 
 /**
  * Created by fy on 2018/6/8.
- *
  */
 public class ImageLoader {
     private ILoaderFactory loaderFactory;
@@ -26,7 +25,7 @@ public class ImageLoader {
     /**
      * 可以动态设置加载图片的工厂
      *
-     * @param loaderFactory  工厂
+     * @param loaderFactory 工厂
      */
     public void setLoaderFactory(ILoaderFactory loaderFactory) {
         if (loaderFactory != null) {
@@ -59,31 +58,32 @@ public class ImageLoader {
      * @param url url
      * @return builder
      */
-    public LoaderBuilder load(String url) {
-        return new LoaderBuilder(url);
+    public FLoadBuilder load(String url) {
+        return new FLoadBuilder(url);
     }
 
     /**
      * @param drawableResId 资源
      * @return builder
      */
-    public LoaderBuilder load(int drawableResId) {
-        return new LoaderBuilder(drawableResId);
+    public FLoadBuilder load(int drawableResId) {
+        return new FLoadBuilder(drawableResId);
     }
+
 
     /**
      * @param uri uri
      * @return builder
      */
-    public LoaderBuilder load(Uri uri) {
-        return new LoaderBuilder(uri);
+    public FLoadBuilder load(Uri uri) {
+        return new FLoadBuilder(uri);
     }
 
     /**
      * @param file 文件
      * @return builder
      */
-    public LoaderBuilder load(File file) {
-        return new LoaderBuilder(file);
+    public FLoadBuilder load(File file) {
+        return new FLoadBuilder(file);
     }
 }
